@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_moment import Moment
 from blog.Config import config
 
 import pymysql
@@ -10,6 +11,7 @@ pymysql.install_as_MySQLdb()
 
 loginmanager=LoginManager()
 bootstrap=Bootstrap()
+moment=Moment()
 db=SQLAlchemy()
 mail=Mail()
 
@@ -25,6 +27,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
     mail.init_app(app)
+    moment.init_app(app)
     from blog.app.rootblueprint.rbp import rootbp
     from blog.app.errorblueprint.ebp import errorbp
     from blog.app.authblueprint.abp import authbp

@@ -3,11 +3,12 @@ from blog.app.db_models import Role,User
 from blog.app.form import Login_Form
 from blog.app.factory import db
 from blog.app.email_fun import send_email
+from datetime import datetime
 rootbp=Blueprint('root_bp',__name__,template_folder='root_bp_templates',static_folder='root_bp_static')
 
 @rootbp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',current_time=datetime.utcnow())
 
 
 @rootbp.route('/t',methods=['GET','POST'])

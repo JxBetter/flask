@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 
+{% block head %}
+    {{ super() }}
+    {{moment.include_jquery()}}
+    {{moment.include_moment()}}
+    {{ moment.lang('zh-CN') }}
+{% endblock %}
+
 {% block title %}Flasky{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
+    <p>The local time is {{ moment(current_time).format('LLL') }}</p>
+    <p>Thar was {{ moment(current_time).fromNow(refresh=True) }}</p>
 </div>
 {% endblock %}
