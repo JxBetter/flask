@@ -1,0 +1,13 @@
+Dear {{ user.username }},
+
+Welcome to Flasky!
+
+To check your old email please click on the following link:
+
+{{ url_for('auth_bp.check_new_email', token=token, name=user.username, _external=True) }}
+
+Sincerely,
+
+The Flasky Team
+
+Note: replies to this email address are not monitored.
