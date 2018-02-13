@@ -4,8 +4,8 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN=True
     SQLALCHEMY_TRACK_MODIFICATIONS=True
     MAIL_PREFIX='[EasyThink]'
-    MAIL_SENDER='15705834033@163.com'
-    MAIL_RECEIVER='429803863@qq.com'
+    MAIL_SENDER='xxxx834033@163.com'
+    MAIL_RECEIVER='4xx63@qq.com'
     
     @staticmethod
     def init_app(app):
@@ -16,8 +16,8 @@ class DevelopmentConfig(Config):
     DEBUG=True
     MAIL_SERVER='smtp.163.com'
     MAIL_USE_TLS=True
-    MAIL_USERNAME='15705834033@163.com'
-    MAIL_PASSWORD='gujinxin9608'
+    MAIL_USERNAME='xxx4033@163.com'
+    MAIL_PASSWORD='xxxxxxx'
     SQLALCHEMY_DATABASE_URI='mysql://root:rootmysql@localhost/flask_web_db'
 
 
