@@ -31,7 +31,11 @@ def create_app(config_name):
     from blog.app.rootblueprint.rbp import rootbp
     from blog.app.errorblueprint.ebp import errorbp
     from blog.app.authblueprint.abp import authbp
-    app.register_blueprint(authbp)
+
     app.register_blueprint(rootbp)
+    app.register_blueprint(authbp)
     app.register_blueprint(errorbp)
+
+
+
     return app

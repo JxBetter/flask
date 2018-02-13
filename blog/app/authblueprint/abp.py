@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request,current_app
 from flask_login import login_required, login_user, logout_user, current_user
 from blog.app.form import Login_Form, Registration_Form, Reset_Form, Reset_Password_Form, Email_Form, Change_Email_Form
-from blog.app.db_models import User
+from blog.app.db_models import User,Role,Permissions
 from blog.app.factory import db
 from blog.app.email_fun import send_email
+import hashlib
 
 authbp = Blueprint('auth_bp', __name__,
                    template_folder='auth_bp_templates',
@@ -65,6 +66,8 @@ def confirm(token, name):
 
 @authbp.before_app_request
 def before_request():
+    if current_user.is_authenticated:
+        current_user.ping()
     if current_user.is_authenticated \
             and not current_user.confirmed \
             and request.endpoint[:8] != 'auth_bp.' \
@@ -171,6 +174,9 @@ def check_new_email(token):
                        token=new_token,
                        user=current_user)
             current_user.email = form.email.data
+            current_user.avatar_hash=hashlib.md5(current_user.email.encode('utf-8')).hexdigest()
+            if form.email.data == current_app.config.get('MAIL_USERNAME'):
+                current_user.role=Role.query.filter_by(permissions=0xff).first()
             flash('Your email has changed to {}'.format(form.email.data))
         return redirect(url_for('root_bp.index'))
     return render_template('reset.html', form=form)
