@@ -3,6 +3,7 @@ from wtforms import ValidationError
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
 from blog.app.db_models import User, Role
+from flask_pagedown.fields import PageDownField
 from flask_login import current_user
 
 
@@ -65,7 +66,7 @@ class EditProfileForm(FlaskForm):
 
 
 class EditProfileAdminForm(FlaskForm):
-    email = StringField('email', validators=[Email(), Length(0, 64)])
+    email = StringField('Email', validators=[Email(), Length(0, 64)])
     username = StringField('Username', validators=[DataRequired(), Length(1, 64), Regexp(
         '^[A-Za-z][A-Za-z0-9_.]*$', 0, 'Username must be letters, numbers, dots,underscores')])
     confirmed = BooleanField('Confirmed')
@@ -84,7 +85,12 @@ class EditProfileAdminForm(FlaskForm):
         self.user = user
 
 
-
 class ShowWhoForm(FlaskForm):
     changewho = StringField('ChangeWho?', validators=[DataRequired(), Length(1, 64)])
     submit = SubmitField('Submit')
+
+
+class ArticleForm(FlaskForm):
+    title=StringField('Title',validators=[DataRequired()])
+    body=PageDownField('Say something',validators=[DataRequired()])
+    submit=SubmitField('Submit')

@@ -1,19 +1,35 @@
-from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort,flash
-from blog.app.db_models import Role, User
-from blog.app.form import EditProfileForm,EditProfileAdminForm,ShowWhoForm
+from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort, flash
+from blog.app.db_models import Role, User, Article
+from blog.app.form import EditProfileForm, EditProfileAdminForm, ShowWhoForm, ArticleForm
 from blog.app.factory import db
 from blog.app.email_fun import send_email
 from blog.app.decorators import admin_required
 from blog.app.db_models import Permissions
-from flask_login import login_required,current_user
+from flask_login import login_required, current_user
+from itsdangerous import TimedJSONWebSignatureSerializer
 from datetime import datetime
 
 rootbp = Blueprint('root_bp', __name__, template_folder='root_bp_templates', static_folder='root_bp_static')
 
 
-@rootbp.route('/')
+@rootbp.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', current_time=datetime.utcnow())
+    form = ArticleForm()
+    if current_user.can(Permissions.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        article = Article(title=form.title.data,
+                          body=form.body.data,
+                          author=current_user._get_current_object())
+        db.session.add(article)
+        db.session.commit()
+        return redirect(url_for('root_bp.index'))
+    page = request.args.get('page', 1, type=int)
+    pagination = Article.query.order_by(Article.timestamp.desc()).paginate(page,
+                                                                           per_page=current_app.config[
+                                                                               'ARTICLES_PER_PAGE'],
+                                                                           error_out=False)
+    articles = pagination.items
+    return render_template('index.html', form=form, articles=articles, pagination=pagination)
 
 
 @rootbp.route('/user/<username>')
@@ -22,69 +38,100 @@ def user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         abort(404)
-    return render_template('user.html', user=user)
+    articles = user.articles.order_by(Article.timestamp.desc()).all()
+    return render_template('user.html', user=user, articles=articles)
 
-@rootbp.route('/edit-profile',methods=['GET','POST'])
+
+@rootbp.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form=EditProfileForm()
+    form = EditProfileForm()
     if form.validate_on_submit():
-        current_user.name=form.name.data
-        current_user.location=form.location.data
-        current_user.about_me=form.about_me.data
+        current_user.name = form.name.data
+        current_user.location = form.location.data
+        current_user.about_me = form.about_me.data
         flash('Your profile has been updated.')
-        return redirect(url_for('root_bp.user',username=current_user.username))
-    form.name.data=current_user.name
-    form.location.data=current_user.location
-    form.about_me.data=current_user.about_me
-    return render_template('edit-profile.html',form=form)
+        return redirect(url_for('root_bp.user', username=current_user.username))
+    form.name.data = current_user.name
+    form.location.data = current_user.location
+    form.about_me.data = current_user.about_me
+    return render_template('edit-profile.html', form=form)
 
 
-@rootbp.route('/edit-profile-admin/<who>',methods=['GET','POST'])
+@rootbp.route('/edit-profile-admin/<who>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_profile_admin(who):
-    form=EditProfileAdminForm()
+    form = EditProfileAdminForm()
     user = User.query.filter_by(username=who).first()
     if form.validate_on_submit():
         if user:
             form.set_user(user)
             if form.username.data != user.username and \
-                not User.query.filter_by(username=form.username.data).first():
-                user.username=form.username.data
+                    not User.query.filter_by(username=form.username.data).first():
+                user.username = form.username.data
             if form.email.data != user.email and \
-                not User.query.filter_by(email=form.email.data).first():
-                user.email=form.email.data
-            user.email=form.email.data
+                    not User.query.filter_by(email=form.email.data).first():
+                user.email = form.email.data
+            user.email = form.email.data
             user.role = Role.query.get(form.role.data)
-            user.name=form.name.data
-            user.location=form.location.data
-            user.about_me=form.about_me.data
+            user.name = form.name.data
+            user.location = form.location.data
+            user.about_me = form.about_me.data
             user.confirmed = form.confirmed.data
             db.session.add(user)
             db.session.commit()
             flash('Profile has been updated by admin.')
-            return redirect(url_for('root_bp.user',username=current_user.username))
-    form.name.data=user.name
-    form.email.data=user.email
-    form.username.data=user.username
-    form.location.data=user.location
-    form.about_me.data=user.about_me
-    form.confirmed.data=user.confirmed
-    return render_template('edit-profile.html',form=form)
+            return redirect(url_for('root_bp.user', username=current_user.username))
+    form.name.data = user.name
+    form.email.data = user.email
+    form.username.data = user.username
+    form.location.data = user.location
+    form.about_me.data = user.about_me
+    form.confirmed.data = user.confirmed
+    return render_template('edit-profile.html', form=form)
 
-@rootbp.route('/showho',methods=['GET','POST'])
+
+@rootbp.route('/showho', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def showho():
-    form=ShowWhoForm()
+    form = ShowWhoForm()
     if form.validate_on_submit():
-        who=form.changewho.data
+        who = form.changewho.data
         if User.query.filter_by(username=who).first():
-            return redirect(url_for('root_bp.edit_profile_admin',who=who))
+            return redirect(url_for('root_bp.edit_profile_admin', who=who))
         else:
-            flash('not exist {}.'. format(who))
-    return render_template('edit-profile.html',form=form)
+            flash('not exist {}.'.format(who))
+    return render_template('edit-profile.html', form=form)
+
+
+@rootbp.route('/article/<token>')
+def per_article(token):
+    s=TimedJSONWebSignatureSerializer(current_app.config['ARTICLE_KEY'])
+    try:
+        data = s.loads(token)
+        article = Article.query.filter_by(id=data.get('confirm')).first()
+    except:
+        abort(500)
+    return render_template('per_article.html', article=article)
+
+@rootbp.route('/edit_article/<int:id>',methods=['GET','POST'])
+@login_required
+def edit_article(id):
+    article=Article.query.get_or_404(id)
+    if current_user != article.author:
+        abort(403)
+    form=ArticleForm()
+    if form.validate_on_submit():
+        article.title=form.title.data
+        article.body=form.body.data
+        article.editstamp=datetime.utcnow()
+        db.session.add(article)
+        db.session.commit()
+        return redirect(url_for('root_bp.index'))
+    return render_template('edit_article.html',form=form)
+
 
 @rootbp.app_context_processor
 def inject_permissions():

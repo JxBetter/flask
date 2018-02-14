@@ -1,0 +1,44 @@
+<ul class="articles">
+    {% for article in articles %}
+        <li class="article">
+            <div class="article-thumbnail">
+                <a href="{{ url_for('root_bp.user',username=article.author.username) }}">
+                    <img class="img-rounded profile-thumbnail"
+                         src="{{ article.author.gravatar(size=40) }}">
+                </a>
+            </div>
+            <div class="article-content">
+                <div class="article-date">
+                        {{ moment(article.timestamp).fromNow() }}<br/>
+                        {{ moment(article.editstamp).fromNow() }}
+                </div>
+                <div class="article-author">
+                    <a href="{{ url_for('root_bp.user',username=article.author.username) }}">
+                    {{ article.author.username}}
+                    </a>
+                </div>
+                <div class="article-body">
+                    {% if article.body_html %}
+                        {{ article.body_html|safe }}
+                    {% else %}
+                    <a href="{{ url_for('root_bp.per_article',token=article.generate_token()) }}">
+                      {{ article.body }}
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="article-footer">
+                    {% if current_user == article.author %}
+                        <a href="{{ url_for('root_bp.edit_article',id=article.id) }}">
+                            <span class="label label-primary">Edit</span>
+                        </a>
+                    {% elif current_user.is_administrator() %}
+                        <a href="{{ url_for('root_bp.edit_article',id=article.id) }}">
+                            <span class="label label-danger">Edit Admin</span>
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

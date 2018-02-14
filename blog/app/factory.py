@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 from blog.Config import config
+from flask_pagedown import PageDown
 
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -13,6 +14,7 @@ loginmanager=LoginManager()
 bootstrap=Bootstrap()
 moment=Moment()
 db=SQLAlchemy()
+pagedown=PageDown()
 mail=Mail()
 
 loginmanager.session_protection='basic'
@@ -28,6 +30,7 @@ def create_app(config_name):
     db.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    pagedown.init_app(app)
     from blog.app.rootblueprint.rbp import rootbp
     from blog.app.errorblueprint.ebp import errorbp
     from blog.app.authblueprint.abp import authbp
@@ -35,6 +38,10 @@ def create_app(config_name):
     app.register_blueprint(rootbp)
     app.register_blueprint(authbp)
     app.register_blueprint(errorbp)
+
+    if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
+        from flask_sslify import SSLify
+        sslify=SSLify(app)
 
 
 
