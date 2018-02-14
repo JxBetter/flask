@@ -65,7 +65,6 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     articles = db.relationship('Article', backref='author', lazy='dynamic')
-    version_num = db.Column(db.String(32), primary_key=True, nullable=False)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
