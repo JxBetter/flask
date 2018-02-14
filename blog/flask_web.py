@@ -20,4 +20,6 @@ def deploy():
     from flask_migrate import upgrade
     upgrade()
     Role.insert_roles()
-    
+
+if __name__ =='__main__':
+    app.run()
