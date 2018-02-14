@@ -1,5 +1,5 @@
 import os,sys
-sys.path.append('/home/jx/flask_web/blog')
+sys.path.append('/home/jx/flask_web')
 from blog.app.factory import create_app,db
 from blog.app.db_models import Role,User,Article
 from flask_migrate import Migrate
