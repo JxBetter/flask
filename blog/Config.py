@@ -14,8 +14,8 @@ class Config:
     MAIL_PASSWORD='gujinxin9608'
     ARTICLES_PER_PAGE=25
     SSL_DISABLE=True
-    MAIL_SENDER='xxxx834033@163.com'
-    MAIL_RECEIVER='4xx63@qq.com'
+    MAIL_SENDER='15705834033@163.com'
+    MAIL_RECEIVER='42980386363@qq.com'
     
     @staticmethod
     def init_app(app):
@@ -26,13 +26,12 @@ class DevelopmentConfig(Config):
     DEBUG=True
     MAIL_SERVER='smtp.163.com'
     MAIL_USE_TLS=True
-    MAIL_USERNAME='xxx4033@163.com'
-    MAIL_PASSWORD='xxxxxxx'
+    MAIL_USERNAME='15705834033@163.com'
+    MAIL_PASSWORD='gujinxin9608'
     SQLALCHEMY_DATABASE_URI='mysql://root:rootmysql@localhost/flask_web_db'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://root:rootmysql@localhost/flask_web_db'
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:rootmysql@localhost/flask_web_db'
 
     @classmethod
     def init_app(cls, app):
