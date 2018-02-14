@@ -28,10 +28,12 @@ class DevelopmentConfig(Config):
     MAIL_USE_TLS=True
     MAIL_USERNAME='15705834033@163.com'
     MAIL_PASSWORD='gujinxin9608'
-    SQLALCHEMY_DATABASE_URI='postgresql-deep-16571'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+                            'mysql://root:rootmysql@localhost/flask_web_db'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql-deep-16571'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+                            'mysql://root:rootmysql@localhost/flask_web_db'
 
 
     @classmethod
@@ -80,6 +82,6 @@ class HerokuConfig(ProductionConfig):
 
 
 config={
-    'default':DevelopmentConfig,
+    'default':HerokuConfig,
     'heroku':HerokuConfig,
 }
