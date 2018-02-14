@@ -31,7 +31,8 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI='mysql://root:rootmysql@0.0.0.0/flask_web_db'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:rootmysql@0.0.0.0/flask_web_db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql-deep-16571' or \
+                              'mysql://root:rootmysql@0.0.0.0/flask_web_db'
 
     @classmethod
     def init_app(cls, app):
