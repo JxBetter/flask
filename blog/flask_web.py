@@ -15,11 +15,8 @@ manager=Manager(app)
 def make_shell_context():
     return dict(db=db,Role=Role,User=User,Article=Article,current_user=current_user)
 
-@manager.command
+@app.cli.command()
 def deploy():
     from flask_migrate import upgrade
     upgrade()
     Role.insert_roles()
-
-if __name__ =='__main__':
-    app.run()
