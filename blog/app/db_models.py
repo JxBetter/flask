@@ -207,3 +207,16 @@ db.event.listen(Article.body, 'set', Article.on_change_body)
 @loginmanager.user_loader
 def load_user(userid):
     return User.query.get(int(userid))
+
+
+class Alembic(db.Model):
+    __tablename__ = 'alembic_version'
+    version_num = db.Column(db.String(32), primary_key=True, nullable=False)
+
+    @staticmethod
+    def clear_A():
+        for a in Alembic.query.all():
+            print (a.version_num)
+            db.session.delete(a)
+        db.session.commit()
+        print ('======== data in Table: Alembic cleared!')

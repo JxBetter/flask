@@ -23,5 +23,11 @@ def deploy():
     upgrade()
     Role.insert_roles()
 
+@manager.command
+def clearAlembic():
+    from flask_migrate import upgrade
+    from blog.app.db_models import Alembic
+    Alembic.clear_A()
+
 if __name__ =='__main__':
     manager.run()
