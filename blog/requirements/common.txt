@@ -21,7 +21,7 @@ Markdown==2.6.8
 MarkupSafe==1.0
 python-dateutil==2.6.1
 python-editor==1.0.3
-PyMySQL==0.8.0
+pymysql==0.8.0
 six==1.10.0
 SQLAlchemy==1.1.11
 visitor==0.1.3
