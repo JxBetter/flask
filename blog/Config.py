@@ -28,10 +28,10 @@ class DevelopmentConfig(Config):
     MAIL_USE_TLS=True
     MAIL_USERNAME='15705834033@163.com'
     MAIL_PASSWORD='gujinxin9608'
-    SQLALCHEMY_DATABASE_URI='mysql://root:rootmysql@0.0.0.0/flask_web_db'
+    SQLALCHEMY_DATABASE_URI='postgresql-deep-16571'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql-deep-16571' 
+    SQLALCHEMY_DATABASE_URI = 'postgresql-deep-16571'
 
 
     @classmethod
