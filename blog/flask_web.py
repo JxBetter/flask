@@ -18,6 +18,7 @@ def make_shell_context():
 @manager.command
 def deploy():
     from flask_migrate import upgrade
+    from blog.app.db_models import Role
     upgrade()
     Role.insert_roles()
 
