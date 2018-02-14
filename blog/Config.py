@@ -82,6 +82,6 @@ class HerokuConfig(ProductionConfig):
 
 
 config={
-    'default':HerokuConfig,
+    'default':DevelopmentConfig,
     'heroku':HerokuConfig,
 }
