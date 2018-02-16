@@ -44,9 +44,10 @@ def register():
         send_email(user.email,
                    'Confirm Your Account',
                    'confirm',
-                   enable=True,
+                   enable=False,
                    user=user,
                    token=token)
+        user.confirmed=True
         flash('Regrister Successful,Now you can login.')
         return redirect(url_for('.login'))
     return render_template('register.html', form=form)
