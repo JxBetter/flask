@@ -120,7 +120,7 @@ def per_article(token):
 @login_required
 def edit_article(id):
     article=Article.query.get_or_404(id)
-    if current_user != article.author:
+    if current_user != article.author and not current_user.is_administrator():
         abort(403)
     form=ArticleForm()
     if form.validate_on_submit():
