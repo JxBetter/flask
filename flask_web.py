@@ -22,6 +22,7 @@ def deploy():
     db.drop_all()
     db.create_all()
     Role.insert_roles()
+    print('ok')
 
 if __name__ =='__main__':
     manager.run()
