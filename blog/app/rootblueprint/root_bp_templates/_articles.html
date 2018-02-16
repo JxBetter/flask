@@ -10,7 +10,7 @@
             <div class="article-content">
                 <div class="article-date">
                         {{ moment(article.timestamp).fromNow() }}<br>
-                        {{ moment(article.editstamp).fromNow() }}
+                        {{ moment(article.editstamp).format('LLL') }}
                 </div>
                 <div class="article-author">
                     <a href="{{ url_for('root_bp.user',username=article.author.username) }}">
