@@ -169,7 +169,7 @@ class Article(db.Model):
     title = db.Column(db.String(512))
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    editstamp=db.Column(db.DateTime,default=timestamp)
+    #editstamp=db.Column(db.DateTime,default=timestamp)
     auth_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body_html= db.Column(db.Text)
 
