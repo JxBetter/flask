@@ -171,6 +171,7 @@ class Article(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     editstamp=db.Column(db.DateTime,default=timestamp)
     auth_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    body_html= db.Column(db.Text)
 
     @staticmethod
     def generate_fake(count=100):
