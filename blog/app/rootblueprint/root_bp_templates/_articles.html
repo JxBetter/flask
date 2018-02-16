@@ -9,8 +9,7 @@
             </div>
             <div class="article-content">
                 <div class="article-date">
-                        {{ moment(article.timestamp).fromNow() }}<br/>
-                        {{ moment(article.editstamp).fromNow() }}
+                        {{ moment(article.timestamp).fromNow() }}
                 </div>
                 <div class="article-author">
                     <a href="{{ url_for('root_bp.user',username=article.author.username) }}">
