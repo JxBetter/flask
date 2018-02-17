@@ -2,6 +2,11 @@
 
 {% block page_content %}
 <h1>{{ article.title }}</h1>
+{% if current_user.is_administrator() %}
+<a href="{{ url_for('root_bp.del_article',article=article) }}">
+<span class="label label-primary">Del</span>
+</a>
+{% endif %}
 <hr/>
 <p>
     {{ article.body }}
