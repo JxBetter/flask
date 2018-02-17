@@ -132,8 +132,9 @@ def edit_article(id):
         return redirect(url_for('root_bp.index'))
     return render_template('edit_article.html',form=form)
 
-@rootbp.route('/delete_article/<article>')
-def del_article(article):
+@rootbp.route('/delete_article/<article_id>')
+def del_article(article_id):
+    article=Article.query.filter_by(id=article_id).first()
     db.session.delete(article)
     db.session.commit()
     return redirect(url_for('root_bp.index'))
