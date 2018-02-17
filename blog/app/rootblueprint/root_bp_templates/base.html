@@ -2,7 +2,7 @@
 
 {% block head %}
 {{ super() }}
-<link rel="shortcut icon" href="{{ url_for('static', filename='../root_bp_static/images/pp.jpg') }}" type="image/x-icon">
+<link rel="shortcut icon" href="{{ url_for('static', filename='../root_bp_static/images/dog.jpg') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='../root_bp_static/images/dog.jpg') }}" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../root_bp_static/styles.css') }}">
 {% endblock %}
@@ -25,7 +25,10 @@
         </div>
         <div id="down" class="navbar-collapse collapse" >
             <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('root_bp.index') }}">infomations</a></li>
+                <li><a href="https://www.facebook.com/100024425416394">
+                    <img src='../root_bp_static/images/fb.png'>
+                    </a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
