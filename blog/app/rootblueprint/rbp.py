@@ -24,7 +24,7 @@ def index():
         db.session.commit()
         return redirect(url_for('root_bp.index'))
     page = request.args.get('page', 1, type=int)
-    pagination = Article.query.order_by(Article.timestamp.desc()).paginate(page,
+    pagination = Article.query.order_by(Article.editstamp.desc()).paginate(page,
                                                                            per_page=current_app.config[
                                                                                'ARTICLES_PER_PAGE'],
                                                                            error_out=False)
