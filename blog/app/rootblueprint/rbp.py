@@ -132,7 +132,7 @@ def edit_article(id):
         return redirect(url_for('root_bp.index'))
     return render_template('edit_article.html',form=form)
 
-@rootbp.route('/delete_article')
+@rootbp.route('/delete_article/<article>')
 def del_article(article):
     db.session.delete(article)
     db.session.commit()
