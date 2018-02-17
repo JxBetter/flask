@@ -20,12 +20,12 @@
                     {% if article.body_html %}
                      <a href="{{ url_for('root_bp.per_article',token=article.generate_token()) }}">
                         {{ article.title }}<br />
-                        {{ article.body_html|safe }}
+                        
                      </a>
                     {% else %}
                     <a href="{{ url_for('root_bp.per_article',token=article.generate_token()) }}">
                         {{ article.title }}<br />
-                        {{ article.body }}
+                        
                     </a>
                     {% endif %}
                 </div>
