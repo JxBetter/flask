@@ -10,5 +10,18 @@
 <hr/>
 <p>
     {{ article.body }}
+    <hr />
 </p>
+<h4 id="comments">Comments</h4>
+{% if current_user.can(Permission.COMMENT) %}
+<div class="comment-form">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endif %}
+{% include '_comments.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, 'root_bp.per_article', fragment='#comments', token=article.generate_token()) }}
+</div>
+{% endif %}
 {% endblock %}
