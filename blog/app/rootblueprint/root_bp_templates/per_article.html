@@ -2,6 +2,12 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
+{% block head %}
+    {{ super() }}
+    {{moment.include_jquery()}}
+    {{moment.include_moment()}}
+{% endblock %}
+
 {% block page_content %}
 <h1>{{ article.title }}</h1>
 {% if current_user.is_administrator() %}
