@@ -106,7 +106,7 @@ def showho():
     return render_template('edit-profile.html', form=form)
 
 
-@rootbp.route('/article/<token>')
+@rootbp.route('/article/<token>',methods=['GET','POST'])
 def per_article(token):
     s=TimedJSONWebSignatureSerializer(current_app.config['ARTICLE_KEY'])
     try:
@@ -117,8 +117,19 @@ def per_article(token):
     form=CommentForm()
     if form.validate_on_submit():
         comment=Comment(body=form.body.data,
-                       )
-    return render_template('per_article.html', article=article)
+                       article=article,
+                       author=current_user._get_current_object())
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('root_bp.per_article',token=article.generate_token(),page=-1))
+    page=request.args.get('page',1,type=int)
+    if page == -1:
+        page=(atricle.comments.count()-1) / \
+             current_app.config['ARTICLES_PER_PAGE']+1
+    pagination=article.comments.order_by(Comment.timestamp.asc()).paginate(
+                                            page,per_page=current_app.config['ARTICLES_PER_PAGE'],error_out=False)
+    comments=pagination.items
+    return render_template('per_article.html', article=article,form=form,comments=comments,pagination=pagination)
 
 @rootbp.route('/edit_article/<int:id>',methods=['GET','POST'])
 @login_required
