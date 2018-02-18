@@ -39,6 +39,7 @@ class Role(db.Model):
                           Permissions.WRITE_ARTICLES |
                           Permissions.MODERATE_COMMENTS, False),
             'Administrator': (0xff, False),
+            'SB':(0x00,False),
         }
         for r in roles:
             role = Role.query.filter_by(name=r).first()
