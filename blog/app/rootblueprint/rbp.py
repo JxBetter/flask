@@ -1,6 +1,6 @@
 from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort, flash
 from blog.app.db_models import Role, User, Article
-from blog.app.form import EditProfileForm, EditProfileAdminForm, ShowWhoForm, ArticleForm
+from blog.app.form import EditProfileForm, EditProfileAdminForm, ShowWhoForm, ArticleForm, CommentForm
 from blog.app.factory import db
 from blog.app.email_fun import send_email
 from blog.app.decorators import admin_required
@@ -114,6 +114,10 @@ def per_article(token):
         article = Article.query.filter_by(id=data.get('confirm')).first()
     except:
         abort(500)
+    form=CommentForm()
+    if form.validate_on_submit():
+        comment=Comment(body=form.body.data,
+                       )
     return render_template('per_article.html', article=article)
 
 @rootbp.route('/edit_article/<int:id>',methods=['GET','POST'])
