@@ -11,7 +11,7 @@ import hashlib
 
 class Permissions:
     FOLLOW = 0x01
-    COMMIT = 0x02
+    COMMENT = 0x02
     WRITE_ARTICLES = 0x04
     MODERATE_COMMENTS = 0x08
     ADMINISTER = 0x80
