@@ -93,3 +93,8 @@ class ArticleForm(FlaskForm):
     title=StringField('Title',validators=[DataRequired()])
     body=PageDownField('Say something',validators=[DataRequired()])
     submit=SubmitField('Submit')
+  
+class CommentForm(FlaskForm):
+    body = StringField('Enter your comment', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
