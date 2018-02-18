@@ -5,17 +5,17 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN=True
     SQLALCHEMY_TRACK_MODIFICATIONS=True
     MAIL_PREFIX='[EasyThink]'
-    MAIL_SENDER='15705834033@163.com'
-    MAIL_RECEIVER='429803863@qq.com'
+    MAIL_SENDER='xxxx@163.com'
+    MAIL_RECEIVER='xxx@qq.com'
     DEBUG=True
     MAIL_SERVER='smtp.163.com'
     MAIL_USE_TLS=True
-    MAIL_USERNAME='15705834033@163.com'
-    MAIL_PASSWORD='gujinxin9608'
+    MAIL_USERNAME='xxx@163.com'
+    MAIL_PASSWORD='xxxxxxxxx'
     ARTICLES_PER_PAGE=25
     SSL_DISABLE=True
-    MAIL_SENDER='15705834033@163.com'
-    MAIL_RECEIVER='42980386363@qq.com'
+    MAIL_SENDER='xxxxx@163.com'
+    MAIL_RECEIVER='xxxxx@qq.com'
     
     @staticmethod
     def init_app(app):
