@@ -65,6 +65,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     articles = db.relationship('Article', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -171,6 +172,7 @@ class Article(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     editstamp=db.Column(db.DateTime,default=datetime.utcnow)
     auth_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    comments = db.relationship('Comment', backref='article', lazy='dynamic')
     body_html= db.Column(db.Text)
 
     @staticmethod
@@ -210,14 +212,22 @@ def load_user(userid):
     return User.query.get(int(userid))
 
 
-class Alembic(db.Model):
-    __tablename__ = 'alembic_version'
-    version_num = db.Column(db.String(32), primary_key=True, nullable=False)
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
 
     @staticmethod
-    def clear_A():
-        for a in Alembic.query.all():
-            print (a.version_num)
-            db.session.delete(a)
-        db.session.commit()
-        print ('======== data in Table: Alembic cleared!')
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i',
+                        'strong']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)
