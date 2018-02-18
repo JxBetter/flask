@@ -124,7 +124,7 @@ def per_article(token):
         return redirect(url_for('root_bp.per_article',token=article.generate_token(),page=-1))
     page=request.args.get('page',1,type=int)
     if page == -1:
-        page=(atricle.comments.count()-1) / \
+        page=(article.comments.count()-1) / \
              current_app.config['ARTICLES_PER_PAGE']+1
     pagination=article.comments.order_by(Comment.timestamp.asc()).paginate(
                                             page,per_page=current_app.config['ARTICLES_PER_PAGE'],error_out=False)
