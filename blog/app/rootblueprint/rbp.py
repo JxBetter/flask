@@ -1,5 +1,5 @@
 from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort, flash
-from blog.app.db_models import Role, User, Article
+from blog.app.db_models import Role, User, Article, Comment
 from blog.app.form import EditProfileForm, EditProfileAdminForm, ShowWhoForm, ArticleForm, CommentForm
 from blog.app.factory import db
 from blog.app.email_fun import send_email
