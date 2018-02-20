@@ -48,7 +48,7 @@ ul.comments li.comment:nth-child(1) {
     border-top: 1px solid #e0e0e0;
 }
 ul.comments li.comment:hover {
-    background-color: #f0f0f0;
+    background-color: darkslategray;
 }
 div.comment-date {
     float: right;
