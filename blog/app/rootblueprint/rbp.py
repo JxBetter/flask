@@ -11,6 +11,8 @@ from datetime import datetime
 
 rootbp = Blueprint('root_bp', __name__, template_folder='root_bp_templates', static_folder='root_bp_static')
 
+res = {}
+
 
 @rootbp.route('/', methods=['GET', 'POST'])
 def index():
@@ -30,6 +32,16 @@ def index():
                                                                            error_out=False)
     articles = pagination.items
     return render_template('index.html', form=form, articles=articles, pagination=pagination)
+
+@rootbp.route('/gs', methods=['GET', 'POST'])
+def grand_service():
+    keys = ['deviceKey', 'personGuid', 'showTime', 'photoUrl', 'type', 'data']
+    if request.method == 'POST':
+        print('get_json: ', request.get_json())
+        for key in keys:
+            res[key] = request.args.get(key)
+            print(request.args.get(key))
+    return jsonify(res)
 
 
 @rootbp.route('/user/<username>')
