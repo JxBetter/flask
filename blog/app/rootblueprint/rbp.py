@@ -54,7 +54,8 @@ def grand_service():
     try:
         data = res_read()
     except Exception as e:
-        return e
+        err = {error: str(e)}
+        return jsonify(err)
     else:
         return jsonify(data)
 
