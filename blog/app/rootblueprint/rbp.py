@@ -37,7 +37,6 @@ def index():
 def grand_service():
     keys = ['deviceKey', 'personGuid', 'showTime', 'photoUrl', 'type', 'data']
     if request.method == 'POST':
-        global res = {}
         print('get_json: ', request.get_json())
         for key in keys:
             res[key] = request.form.get(key)
