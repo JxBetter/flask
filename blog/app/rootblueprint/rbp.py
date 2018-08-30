@@ -33,11 +33,11 @@ def index():
     return render_template('index.html', form=form, articles=articles, pagination=pagination)
 
 def res_write(data):
-    with open('./res.txt', 'w') as f:
+    with open('res.txt', 'w') as f:
         f.write(json.dumps(data))
     
 def res_read():
-    with open('./res.txt', 'r') as f:
+    with open('res.txt', 'r') as f:
         data = json.loads(f.read())
         return data
 
