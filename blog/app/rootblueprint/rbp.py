@@ -51,8 +51,12 @@ def grand_service():
             res[key] = request.form.get(key)
             print(request.args.get(key))
         res_write(res)
-    data = res_read()
-    return jsonify(data)
+    try:
+        data = res_read()
+    except Exception as e:
+        return e
+    else:
+        return jsonify(data)
 
 
 @rootbp.route('/user/<username>')
