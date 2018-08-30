@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort, flash, jsonify
 from blog.app.db_models import Role, User, Article, Comment
 from blog.app.form import EditProfileForm, EditProfileAdminForm, ShowWhoForm, ArticleForm, CommentForm
@@ -10,8 +11,6 @@ from itsdangerous import TimedJSONWebSignatureSerializer
 from datetime import datetime
 
 rootbp = Blueprint('root_bp', __name__, template_folder='root_bp_templates', static_folder='root_bp_static')
-
-res = {}
 
 
 @rootbp.route('/', methods=['GET', 'POST'])
@@ -33,18 +32,27 @@ def index():
     articles = pagination.items
     return render_template('index.html', form=form, articles=articles, pagination=pagination)
 
+def res_write(data):
+    with open('./res.txt', 'w') as f:
+        f.write(json.dumps(data))
+    
+def res_read():
+    with open('./res.txt', 'r') as f:
+        data = json.loads(f.read())
+        return data
+
 @rootbp.route('/gs', methods=['GET', 'POST'])
 def grand_service():
     keys = ['deviceKey', 'personGuid', 'showTime', 'photoUrl', 'type', 'data']
     if request.method == 'POST':
+        res = {}
         print('get_json: ', request.get_json())
         for key in keys:
             res[key] = request.form.get(key)
-            #if res[key] == None:
-                #res[key] = request.form.get(key)
             print(request.args.get(key))
-        res['res_id'] = id(res)
-    return jsonify(res)
+        res_write(res)
+    data = res_read()
+    return jsonify(data)
 
 
 @rootbp.route('/user/<username>')
