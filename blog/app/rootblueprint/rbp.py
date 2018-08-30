@@ -39,7 +39,7 @@ def grand_service():
     if request.method == 'POST':
         print('get_json: ', request.get_json())
         for key in keys:
-            res[key] = request.args.get(key)
+            res[key] = request.get_json().get(key)
             #if res[key] == None:
                 #res[key] = request.form.get(key)
             print(request.args.get(key))
