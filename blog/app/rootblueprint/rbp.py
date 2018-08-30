@@ -43,6 +43,7 @@ def grand_service():
             #if res[key] == None:
                 #res[key] = request.form.get(key)
             print(request.args.get(key))
+        res['res_id'] = id(res)
     return jsonify(res)
 
 
