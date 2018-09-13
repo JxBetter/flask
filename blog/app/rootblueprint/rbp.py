@@ -58,6 +58,25 @@ def grand_service():
         return jsonify(err)
     else:
         return jsonify(data)
+    
+   
+@rootbp.route('/offline', methods=['GET', 'POST'])
+def offline():
+    keys = ['deviceKey', 'personId', 'time', 'ip', 'type', 'path']
+    if request.method == 'POST':
+        res = {}
+        #print('get_json: ', request.get_json())
+        for key in keys:
+            res[key] = request.get_json().get(key)
+            #print(request.args.get(key))
+        res_write(res)
+    try:
+        data = res_read()
+    except Exception as e:
+        err = {'error': str(e)}
+        return jsonify(err)
+    else:
+        return jsonify(data)
 
 
 @rootbp.route('/user/<username>')
