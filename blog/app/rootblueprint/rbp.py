@@ -51,12 +51,12 @@ def grand_service():
             res[key] = request.form.get(key)
             print(request.args.get(key))
         res['system'] = '沃土'
-        err['system'] = '沃土'
         res_write(res)
     try:
         data = res_read()
     except Exception as e:
         err = {'error': str(e)}
+        err['system'] = '沃土'
         return jsonify(err)
     else:
         return jsonify(data)
@@ -72,12 +72,12 @@ def offline():
             res[key] = request.get_json().get(key)
             #print(request.args.get(key))
         res['system'] = '离线'
-        err['system'] = '离线'
         res_write(res)
     try:
         data = res_read()
     except Exception as e:
         err = {'error': str(e)}
+        err['system'] = '离线'
         return jsonify(err)
     else:
         return jsonify(data)
