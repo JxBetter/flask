@@ -50,6 +50,7 @@ def grand_service():
         for key in keys:
             res[key] = request.form.get(key)
             print(request.args.get(key))
+        res['system'] = '沃土'
         res_write(res)
     try:
         data = res_read()
@@ -69,6 +70,7 @@ def offline():
         for key in keys:
             res[key] = request.get_json().get(key)
             #print(request.args.get(key))
+        res['system'] = '离线'
         res_write(res)
     try:
         data = res_read()
