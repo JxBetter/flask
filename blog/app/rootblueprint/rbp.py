@@ -52,7 +52,7 @@ def grand_service():
             res[key] = request.form.get(key)
             print(request.args.get(key))
         res['system'] = 'grand_service'
-        time_local = time.localtime(res['showTime'])
+        time_local = time.localtime(int(res['showTime']))
         # 转换成新的时间格式(2016-05-05 20:28:54)
         dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
         res['localTime'] = dt
@@ -77,7 +77,7 @@ def offline():
             res[key] = request.get_json().get(key)
             #print(request.args.get(key))
         res['system'] = 'offline'
-        time_local = time.localtime(res['time'])
+        time_local = time.localtime(int(res['time']))
         # 转换成新的时间格式(2016-05-05 20:28:54)
         dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
         res['localTime'] = dt
