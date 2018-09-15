@@ -33,12 +33,12 @@ def index():
     articles = pagination.items
     return render_template('index.html', form=form, articles=articles, pagination=pagination)
 
-def res_write(data):
-    with open('res.txt', 'w') as f:
+def res_write(file_name, data):
+    with open(file_name, 'w') as f:
         f.write(json.dumps(data))
     
-def res_read():
-    with open('res.txt', 'r') as f:
+def res_read(file_name):
+    with open(file_name, 'r') as f:
         data = json.loads(f.read())
         return data
 
@@ -52,13 +52,13 @@ def grand_service():
             res[key] = request.form.get(key)
             print(request.args.get(key))
         res['system'] = 'grand_service'
-        time_local = time.localtime(int(res['showTime']))
+        time_local = time.localtime(int(res['showTime'])/1000)
         # 转换成新的时间格式(2016-05-05 20:28:54)
         dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
         res['localTime'] = dt
-        res_write(res)
+        res_write('gs_res.txt', res)
     try:
-        data = res_read()
+        data = res_read('gs_res.txt')
     except Exception as e:
         err = {'error': str(e)}
         err['system'] = 'grand_service'
@@ -77,13 +77,13 @@ def offline():
             res[key] = request.get_json().get(key)
             #print(request.args.get(key))
         res['system'] = 'offline'
-        time_local = time.localtime(int(res['time']))
+        time_local = time.localtime(int(res['time'])/1000)
         # 转换成新的时间格式(2016-05-05 20:28:54)
         dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
         res['localTime'] = dt
-        res_write(res)
+        res_write('ol_res.txt', res)
     try:
-        data = res_read()
+        data = res_read('ol_res.txt')
     except Exception as e:
         err = {'error': str(e)}
         err['system'] = 'offline'
