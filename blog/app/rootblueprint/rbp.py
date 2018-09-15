@@ -1,3 +1,4 @@
+import time
 import json
 from flask import Blueprint, session, render_template, redirect, url_for, current_app, request, abort, flash, jsonify
 from blog.app.db_models import Role, User, Article, Comment
@@ -51,6 +52,10 @@ def grand_service():
             res[key] = request.form.get(key)
             print(request.args.get(key))
         res['system'] = 'grand_service'
+        time_local = time.localtime(res['showTime'])
+        # 转换成新的时间格式(2016-05-05 20:28:54)
+        dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+        res['localTime'] = dt
         res_write(res)
     try:
         data = res_read()
@@ -72,6 +77,10 @@ def offline():
             res[key] = request.get_json().get(key)
             #print(request.args.get(key))
         res['system'] = 'offline'
+        time_local = time.localtime(res['time'])
+        # 转换成新的时间格式(2016-05-05 20:28:54)
+        dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+        res['localTime'] = dt
         res_write(res)
     try:
         data = res_read()
