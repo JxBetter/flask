@@ -14,7 +14,7 @@ from datetime import datetime
 rootbp = Blueprint('root_bp', __name__, template_folder='root_bp_templates', static_folder='root_bp_static')
 
 
-@rootbp.route('/hidden', methods=['GET', 'POST'])
+@rootbp.route('/', methods=['GET', 'POST'])
 def index():
     form = ArticleForm()
     if current_user.can(Permissions.WRITE_ARTICLES) and \
@@ -42,7 +42,7 @@ def res_read(file_name):
         data = json.loads(f.read())
         return data
 
-@rootbp.route('/', methods=['GET', 'POST'])
+@rootbp.route('/gs', methods=['GET', 'POST'])
 def grand_service():
     keys = ['deviceKey', 'personGuid', 'showTime', 'photoUrl', 'type', 'data']
     if request.method == 'POST':
